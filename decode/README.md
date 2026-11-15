@@ -6,6 +6,7 @@
 | Arquivo | Uso |
 |---|---|
 | `index.html` | Ferramenta web: cadastro, score automático, filtros e export CSV (dados no navegador) |
+| `posicionamento-criativa.md` | Posicionamento, pilares, linhas de conteúdo e tom da Criativa |
 | `playbook.md` | Como buscar, validar e modelar (passo a passo) |
 | `perfis-template.csv` | Cabeçalho-base para importar perfis (mesmas colunas do export) |
 

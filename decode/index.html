@@ -42,7 +42,7 @@ a{color:var(--p2)}
 <div class="grid">
   <form class="card" id="f">
     <b>Novo perfil</b>
-    <div class="row"><div><label>Nicho</label><input id="nicho" required placeholder="Ex.: Estética"></div>
+    <div class="row"><div><label>Nicho</label><input id="nicho" required placeholder="Ex.: Gestor de tráfego local"></div>
       <div><label>Plataforma</label><select id="plat"><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>Meta Ad Library</option><option>Google Meu Negócio</option></select></div></div>
     <label>Perfil / @</label><input id="perfil" required placeholder="@perfil">
     <label>URL</label><input id="url" placeholder="https://">
@@ -52,9 +52,12 @@ a{color:var(--p2)}
       <div><label>Posts por semana</label><input id="freq" type="number" min="0" placeholder="4"></div></div>
     <div class="row"><div><label>Prova comercial (0–5)</label><input id="prova" type="number" min="0" max="5" value="0"></div>
       <div><label>Posicionamento claro (0–5)</label><input id="pos" type="number" min="0" max="5" value="0"></div></div>
-    <label>Replicabilidade (0–5)</label><input id="rep" type="number" min="0" max="5" value="0">
+    <div class="row"><div><label>Pessoalidade/proximidade (0–5)</label><input id="pess" type="number" min="0" max="5" value="0"></div>
+      <div><label>Replicabilidade (0–5)</label><input id="rep" type="number" min="0" max="5" value="0"></div></div>
+    <label>Pilar da Criativa que ele alimenta</label>
+    <select id="pilar"><option value="">—</option><option>Geração de demanda</option><option>Posicionamento de marca</option><option>CRM e faturamento</option><option>Atendimento com IA</option><option>Pessoalidade (bastidor/autoridade)</option></select>
     <label>Hooks / formato campeão</label><textarea id="hooks"></textarea>
-    <label>O que modelar</label><textarea id="modelar"></textarea>
+    <label>Adaptação para a Criativa (o que modelar)</label><textarea id="modelar"></textarea>
     <label>O que evitar</label><textarea id="evitar"></textarea>
     <div class="score" id="sc">0</div><div class="verdict" id="vd">Preencha para calcular</div>
     <div style="display:flex;gap:8px;margin-top:12px"><button>Salvar perfil</button><button type="reset" class="ghost" id="rs">Limpar</button></div>
@@ -85,17 +88,18 @@ const $=id=>document.getElementById(id);
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 function calc(p){
-  const eng=clamp((+p.eng||0)/6,0,1)*25;
-  const acima=clamp((+p.acima||0)/30,0,1)*20;
+  const eng=clamp((+p.eng||0)/6,0,1)*20;
+  const acima=clamp((+p.acima||0)/30,0,1)*15;
   const prova=clamp((+p.prova||0)/5,0,1)*25;
   const pos=clamp((+p.pos||0)/5,0,1)*15;
-  const freq=clamp((+p.freq||0)/3,0,1)*10;
+  const pess=clamp((+p.pess||0)/5,0,1)*15;
+  const freq=clamp((+p.freq||0)/3,0,1)*5;
   const rep=clamp((+p.rep||0)/5,0,1)*5;
-  return Math.round(eng+acima+prova+pos+freq+rep);
+  return Math.round(eng+acima+prova+pos+pess+freq+rep);
 }
 const status=s=>s>=70?'modelar':s>=50?'monitorar':'descartar';
 const cls=s=>s==='modelar'?'m':s==='monitorar'?'w':'d';
-const ids=['nicho','plat','perfil','url','seg','eng','acima','freq','prova','pos','rep','hooks','modelar','evitar'];
+const ids=['nicho','plat','perfil','url','seg','eng','acima','freq','prova','pos','pess','rep','pilar','hooks','modelar','evitar'];
 const read=()=>Object.fromEntries(ids.map(i=>[i,$(i).value]));
 function live(){const s=calc(read());$('sc').textContent=s;$('vd').textContent=status(s)+' (≥70 modelar · 50–69 monitorar · <50 descartar)'}
 ids.forEach(i=>$(i).addEventListener('input',live));
@@ -114,14 +118,14 @@ function render(){
   $('tb').innerHTML=rows.map(p=>{
     const u=safeUrl(p.url);
     const name=u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(p.perfil)}</a>`:esc(p.perfil);
-    const det=[p.hooks&&'<b>Hooks:</b> '+esc(p.hooks),p.modelar&&'<b>Modelar:</b> '+esc(p.modelar),p.evitar&&'<b>Evitar:</b> '+esc(p.evitar)].filter(Boolean).join('<br>');
-    return `<tr><td>${name}<div class="note">${esc(p.plat)} · ${esc(p.seg)} seg.</div>${det?`<div class="note">${det}</div>`:''}</td><td>${esc(p.nicho)}</td><td>${esc(p.eng)}%</td><td><b>${p.score}</b></td><td><span class="tag ${cls(p.status)}">${p.status}</span></td><td><button class="ghost sm" data-d="${p.id}">Excluir</button></td></tr>`;
+    const det=[p.hooks&&'<b>Hooks:</b> '+esc(p.hooks),p.modelar&&'<b>Adaptar:</b> '+esc(p.modelar),p.evitar&&'<b>Evitar:</b> '+esc(p.evitar)].filter(Boolean).join('<br>');
+    return `<tr><td>${name}<div class="note">${esc(p.plat)} · ${esc(p.seg)} seg.${p.pilar?' · '+esc(p.pilar):''}</div>${det?`<div class="note">${det}</div>`:''}</td><td>${esc(p.nicho)}</td><td>${esc(p.eng)}%</td><td><b>${p.score}</b></td><td><span class="tag ${cls(p.status)}">${p.status}</span></td><td><button class="ghost sm" data-d="${p.id}">Excluir</button></td></tr>`;
   }).join('');
 }
 $('tb').addEventListener('click',e=>{const id=e.target.dataset.d;if(id&&confirm('Excluir este perfil?')){data=data.filter(p=>String(p.id)!==id);save();render()}});
 $('q').addEventListener('input',render);$('fs').addEventListener('change',render);
 
-const cols=['nicho','plat','perfil','url','seg','eng','acima','freq','prova','pos','rep','hooks','modelar','evitar','score','status'];
+const cols=['nicho','plat','perfil','url','seg','eng','acima','freq','prova','pos','pess','rep','pilar','hooks','modelar','evitar','score','status'];
 const cell=v=>{v=String(v??'');if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
 $('exp').addEventListener('click',()=>{
   const csv=[cols.join(',')].concat(data.map(p=>cols.map(c=>cell(p[c])).join(','))).join('\n');
