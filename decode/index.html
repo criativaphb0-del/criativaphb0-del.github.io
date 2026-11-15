@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decode — Radar de Perfis</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--border:rgba(255,255,255,.1);--p:#8621fe;--p2:#a855f7;--g:#22c55e;--a:#f59e0b;--r:#ef4444;--muted:rgba(255,255,255,.5);--radius:12px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:#fff;font-size:14px;line-height:1.5;padding:16px;max-width:1200px;margin:0 auto}
+h1{font-size:22px}h1 span{color:var(--p2)}
+.sub{color:var(--muted);margin:4px 0 16px}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:16px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+label{display:block;font-size:12px;color:var(--muted);margin:10px 0 4px}
+input,select,textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:#fff;padding:8px 10px;font:inherit}
+textarea{min-height:56px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{background:var(--p);color:#fff;border:0;border-radius:8px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer}
+button.ghost{background:var(--bg3);border:1px solid var(--border)}
+button.sm{padding:4px 8px;font-size:12px}
+.score{font-size:30px;font-weight:600;text-align:center;margin:12px 0 4px}
+.verdict{text-align:center;font-size:12px;color:var(--muted)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.bar input,.bar select{width:auto;flex:1;min-width:140px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.m{background:rgba(34,197,94,.15);color:var(--g)}.w{background:rgba(245,158,11,.15);color:var(--a)}.d{background:rgba(239,68,68,.15);color:var(--r)}
+.scroll{overflow-x:auto}
+a{color:var(--p2)}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<h1>Decode <span>· Radar de Perfis</span></h1>
+<p class="sub">Encontre perfis com conteúdo validado para modelar. Score 0–100 automático. Dados ficam só no seu navegador.</p>
+
+<div class="grid">
+  <form class="card" id="f">
+    <b>Novo perfil</b>
+    <div class="row"><div><label>Nicho</label><input id="nicho" required placeholder="Ex.: Estética"></div>
+      <div><label>Plataforma</label><select id="plat"><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>Meta Ad Library</option><option>Google Meu Negócio</option></select></div></div>
+    <label>Perfil / @</label><input id="perfil" required placeholder="@perfil">
+    <label>URL</label><input id="url" placeholder="https://">
+    <div class="row"><div><label>Seguidores</label><input id="seg" type="number" min="0"></div>
+      <div><label>Engajamento médio (%)</label><input id="eng" type="number" step="0.1" min="0" placeholder="3.5"></div></div>
+    <div class="row"><div><label>Posts acima da média (%)</label><input id="acima" type="number" min="0" max="100" placeholder="30"></div>
+      <div><label>Posts por semana</label><input id="freq" type="number" min="0" placeholder="4"></div></div>
+    <div class="row"><div><label>Prova comercial (0–5)</label><input id="prova" type="number" min="0" max="5" value="0"></div>
+      <div><label>Posicionamento claro (0–5)</label><input id="pos" type="number" min="0" max="5" value="0"></div></div>
+    <label>Replicabilidade (0–5)</label><input id="rep" type="number" min="0" max="5" value="0">
+    <label>Hooks / formato campeão</label><textarea id="hooks"></textarea>
+    <label>O que modelar</label><textarea id="modelar"></textarea>
+    <label>O que evitar</label><textarea id="evitar"></textarea>
+    <div class="score" id="sc">0</div><div class="verdict" id="vd">Preencha para calcular</div>
+    <div style="display:flex;gap:8px;margin-top:12px"><button>Salvar perfil</button><button type="reset" class="ghost" id="rs">Limpar</button></div>
+    <p class="note">Engajamento: &gt;3% bom, &gt;6% ótimo. Alerta: seguidores comprados, engajamento só de sorteio, picos únicos.</p>
+  </form>
+
+  <div class="card">
+    <div class="bar">
+      <input id="q" placeholder="Buscar perfil ou nicho">
+      <select id="fs"><option value="">Todos os status</option><option>modelar</option><option>monitorar</option><option>descartar</option></select>
+      <button class="ghost" id="exp">Exportar CSV</button>
+      <button class="ghost" id="imp">Importar CSV</button>
+      <input type="file" id="file" accept=".csv" hidden>
+    </div>
+    <div class="scroll"><table>
+      <thead><tr><th>Perfil</th><th>Nicho</th><th>Eng.</th><th>Score</th><th>Status</th><th></th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table></div>
+    <p class="note" id="empty">Nenhum perfil ainda. Cadastre o primeiro ao lado.</p>
+  </div>
+</div>
+
+<script>
+const KEY='decode_perfis_v1';
+let data=[];
+try{data=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
+const $=id=>document.getElementById(id);
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+function calc(p){
+  const eng=clamp((+p.eng||0)/6,0,1)*25;
+  const acima=clamp((+p.acima||0)/30,0,1)*20;
+  const prova=clamp((+p.prova||0)/5,0,1)*25;
+  const pos=clamp((+p.pos||0)/5,0,1)*15;
+  const freq=clamp((+p.freq||0)/3,0,1)*10;
+  const rep=clamp((+p.rep||0)/5,0,1)*5;
+  return Math.round(eng+acima+prova+pos+freq+rep);
+}
+const status=s=>s>=70?'modelar':s>=50?'monitorar':'descartar';
+const cls=s=>s==='modelar'?'m':s==='monitorar'?'w':'d';
+const ids=['nicho','plat','perfil','url','seg','eng','acima','freq','prova','pos','rep','hooks','modelar','evitar'];
+const read=()=>Object.fromEntries(ids.map(i=>[i,$(i).value]));
+function live(){const s=calc(read());$('sc').textContent=s;$('vd').textContent=status(s)+' (≥70 modelar · 50–69 monitorar · <50 descartar)'}
+ids.forEach(i=>$(i).addEventListener('input',live));
+$('rs').addEventListener('click',()=>setTimeout(live,0));
+$('f').addEventListener('submit',e=>{
+  e.preventDefault();
+  const p=read();p.score=calc(p);p.status=status(p.score);p.id=Date.now();
+  data.push(p);save();$('f').reset();live();render();
+});
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function safeUrl(u){return /^https?:\/\//i.test(u)?u:''}
+function render(){
+  const q=$('q').value.toLowerCase(),fs=$('fs').value;
+  const rows=data.filter(p=>(!fs||p.status===fs)&&(!q||(p.perfil+p.nicho).toLowerCase().includes(q))).sort((a,b)=>b.score-a.score);
+  $('empty').style.display=rows.length?'none':'block';
+  $('tb').innerHTML=rows.map(p=>{
+    const u=safeUrl(p.url);
+    const name=u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(p.perfil)}</a>`:esc(p.perfil);
+    const det=[p.hooks&&'<b>Hooks:</b> '+esc(p.hooks),p.modelar&&'<b>Modelar:</b> '+esc(p.modelar),p.evitar&&'<b>Evitar:</b> '+esc(p.evitar)].filter(Boolean).join('<br>');
+    return `<tr><td>${name}<div class="note">${esc(p.plat)} · ${esc(p.seg)} seg.</div>${det?`<div class="note">${det}</div>`:''}</td><td>${esc(p.nicho)}</td><td>${esc(p.eng)}%</td><td><b>${p.score}</b></td><td><span class="tag ${cls(p.status)}">${p.status}</span></td><td><button class="ghost sm" data-d="${p.id}">Excluir</button></td></tr>`;
+  }).join('');
+}
+$('tb').addEventListener('click',e=>{const id=e.target.dataset.d;if(id&&confirm('Excluir este perfil?')){data=data.filter(p=>String(p.id)!==id);save();render()}});
+$('q').addEventListener('input',render);$('fs').addEventListener('change',render);
+
+const cols=['nicho','plat','perfil','url','seg','eng','acima','freq','prova','pos','rep','hooks','modelar','evitar','score','status'];
+const cell=v=>{v=String(v??'');if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+$('exp').addEventListener('click',()=>{
+  const csv=[cols.join(',')].concat(data.map(p=>cols.map(c=>cell(p[c])).join(','))).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));a.download='decode-perfis.csv';a.click();
+});
+function parseCSV(t){const out=[];let r=[],c='',q=false;
+  for(let i=0;i<t.length;i++){const ch=t[i];
+    if(q){if(ch==='"'&&t[i+1]==='"'){c+='"';i++}else if(ch==='"')q=false;else c+=ch}
+    else if(ch==='"')q=true;else if(ch===','){r.push(c);c=''}
+    else if(ch==='\n'){r.push(c);out.push(r);r=[];c=''}else if(ch!=='\r')c+=ch}
+  if(c||r.length){r.push(c);out.push(r)}return out}
+$('imp').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  f.text().then(t=>{
+    const rows=parseCSV(t.replace(/^﻿/,''));const h=rows.shift()||[];
+    rows.filter(r=>r.some(x=>x)).forEach((r,i)=>{
+      const p={};h.forEach((k,j)=>p[k.trim()]=r[j]);
+      if(!p.perfil)return;
+      p.score=calc(p);p.status=status(p.score);p.id=Date.now()+i;data.push(p)
+    });
+    save();render();e.target.value='';
+  });
+});
+render();live();
+</script>
+</body>
+</html>
