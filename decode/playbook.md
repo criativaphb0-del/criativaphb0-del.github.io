@@ -1,7 +1,7 @@
 # Playbook Decode
 
 ## 0. Posicionamento da Criativa (régua de tudo)
-Veja `posicionamento-criativa.md`. Resumo: **não somos agência genérica**; vendemos **pessoalidade e proximidade** com 3 entregas oficiais: (1) geração de demanda com tráfego pago e posicionamento de marca, (2) organização de faturamento com CRM, (3) atendimento com IA.
+Veja `posicionamento-criativa.md`. Público: **gestores de tráfego, social media e prestadores de marketing digital**. Resumo: **não somos agência genérica**; vendemos **pessoalidade e proximidade** com 3 entregas oficiais: (1) geração de demanda com tráfego pago e posicionamento de marca, (2) organização de faturamento com CRM, (3) atendimento com IA.
 **Referência ideal =** profissional/negócio que prova resultado **e** tem cara, voz e proximidade. Agência genérica de "mil serviços" entra só como anti-referência.
 
 ## 1. Caçar (onde achar)
@@ -10,7 +10,8 @@ Veja `posicionamento-criativa.md`. Resumo: **não somos agência genérica**; ve
 - **Google Meu Negócio / Maps:** concorrentes locais com mais avaliações e fotos recentes.
 - **Hashtags e sons em alta** do nicho (últimos 30 dias).
 - Meta: **15–20 perfis**, de 3 faixas: referência nacional, regional (Nordeste/PI) e micro (<20k) com alto engajamento.
-- Prioridade: gestores de tráfego autônomos e consultores com rosto/voz próprios, e especialistas que falam com dono de negócio local (restaurante, saúde/estética, turismo).
+- Prioridade: **criadores e profissionais que falam com gestores de tráfego, social media e prestadores de marketing digital** (educadores, consultores, gestores que mostram bastidor). São eles que disputam a atenção do nosso público.
+- Busque também: perfis de gestores com comunidade engajada, e posts de nicho sobre prospecção, CRM, IA no atendimento e posicionamento de profissional.
 
 ## 2. Validar (Score 0–100)
 | Critério | Peso | Como medir |

@@ -13,18 +13,19 @@ Diferencial: **pessoalidade e proximidade**.
 | **Organização de faturamento** | CRM: leads, funil, cobrança e visão do que entra de dinheiro |
 | **Atendimento com IA** | Atendimento automatizado (ex.: WhatsApp) que responde rápido e não perde lead **(confirmar escopo)** |
 
-## Quem atrai (confirmar)
-Dono de negócio local, com foco regional (PI/Nordeste): restaurantes, saúde/estética, turismo e pousadas.
+## Quem atrai
+**Gestores de tráfego pago, social media e profissionais que prestam serviços de marketing digital** (autônomos e pequenos times). A Criativa fala de profissional para profissional, mostrando como opera na prática.
+**(confirmar)** O que a Criativa oferece a esse público: mentoria, consultoria, método/templates, ferramenta, parceria/white label? Isso define o CTA do conteúdo.
 
-## Linhas de conteúdo
-1. **Demanda:** bastidor de campanha, antes/depois de resultado, erros comuns de anúncio local.
-2. **Posicionamento:** por que marca forte vende mais caro; como o cliente aparece na internet.
-3. **CRM/faturamento:** "quanto você realmente fatura por lead?", organização simples, cobrança sem dor.
-4. **IA no atendimento:** demonstração do bot respondendo, lead que seria perdido, tempo de resposta.
-5. **Pessoalidade:** rotina, relato de cliente, opinião, bastidor humano.
+## Linhas de conteúdo (para esse público)
+1. **Geração de demanda:** como o gestor capta e fecha clientes (prospecção, pitch, reunião de diagnóstico, proposta).
+2. **Posicionamento:** como o profissional se diferencia de agência genérica e vira referência no nicho/cidade.
+3. **CRM e faturamento:** como organizar leads, contratos, cobrança e caixa sem planilha bagunçada; bastidor do sistema da Criativa.
+4. **IA no atendimento:** como usar IA para responder rápido, qualificar lead e escalar sem perder o toque pessoal.
+5. **Pessoalidade:** rotina real, erros, bastidor de cliente, opinião de quem executa.
 
 ## Tom
-Próximo, humano, direto, 1ª pessoa ("eu cuido", "a gente faz"). Sem "somos uma agência full service", sem promessa vazia.
+Próximo, humano, direto, de colega para colega, 1ª pessoa ("eu faço", "na minha operação"). Sem "somos uma agência full service", sem promessa vazia.
 
 ## Não fazer
-Listar 20 serviços · linguagem corporativa · copiar referência · prometer resultado garantido.
+Listar 20 serviços · guru de promessa · linguagem corporativa · copiar referência · prometer resultado garantido.
